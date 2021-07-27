@@ -9,6 +9,8 @@
 
 #include <ceres/ceres.h>
 
+// fix size compare to CostFunction 
+//                              Dimension of residual, demension of Pi(q, t), demension of Mi(v, ba, bg), d of pj, d of mj
 class IMUFactor : public ceres::SizedCostFunction<15, 7, 9, 7, 9>
 {
   public:
