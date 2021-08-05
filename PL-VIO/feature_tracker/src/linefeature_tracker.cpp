@@ -199,8 +199,8 @@ void LineFeatureTracker::readImage(const cv::Mat &_img)
                            "frame");
         visualizeLinewithID(forwframe_->vecLine,forwframe_->lineID,forwframe_->img,"forwframe_");
         visualizeLinewithID(curframe_->vecLine,curframe_->lineID,curframe_->img,"curframe_");
-        stringstream ss;
-        ss <<"/home/hyj/datasets/line/" <<frame_cnt<<".jpg";
+        // stringstream ss;
+        // ss <<"/home/hyj/datasets/line/" <<frame_cnt<<".jpg";
         // SaveFrameLinewithID(forwframe_->vecLine,forwframe_->lineID,forwframe_->img,ss.str().c_str());
         waitKey(5);
 
