@@ -397,14 +397,17 @@ bool Estimator::visualInitialAlign()
     f_manager.triangulate(Ps, &(TIC_TMP[0]), &(RIC[0]));
 
     double s = (x.tail<1>())(0);
+    // update pre_integration in slide window
     for (int i = 0; i <= WINDOW_SIZE; i++)
     {
         pre_integrations[i]->repropagate(Vector3d::Zero(), Bgs[i]);
     }
+    // update position
     for (int i = frame_count; i >= 0; i--)
         Ps[i] = s * Ps[i] - Rs[i] * TIC[0] - (s * Ps[0] - Rs[0] * TIC[0]);
     int kv = -1;
     map<double, ImageFrame>::iterator frame_i;
+    // update Vs
     for (frame_i = all_image_frame.begin(); frame_i != all_image_frame.end(); frame_i++)
     {
         if(frame_i->second.is_key_frame)
@@ -413,6 +416,7 @@ bool Estimator::visualInitialAlign()
             Vs[kv] = frame_i->second.R * x.segment<3>(kv * 3);
         }
     }
+    // for scale
     for (auto &it_per_id : f_manager.feature)
     {
         it_per_id.used_num = it_per_id.feature_per_frame.size();
@@ -427,6 +431,7 @@ bool Estimator::visualInitialAlign()
     g = R0 * g;
     //Matrix3d rot_diff = R0 * Rs[0].transpose();
     Matrix3d rot_diff = R0;
+    // transform to first frame coordinate
     for (int i = 0; i <= frame_count; i++)
     {
         Ps[i] = rot_diff * Ps[i];
@@ -676,13 +681,13 @@ void Estimator::optimization()
     for (int i = 0; i < WINDOW_SIZE + 1; i++)
     {
         ceres::LocalParameterization *local_parameterization = new PoseLocalParameterization();
-        problem.AddParameterBlock(para_Pose[i], SIZE_POSE, local_parameterization);
-        problem.AddParameterBlock(para_SpeedBias[i], SIZE_SPEEDBIAS);
+        problem.AddParameterBlock(para_Pose[i], SIZE_POSE, local_parameterization); // pose
+        problem.AddParameterBlock(para_SpeedBias[i], SIZE_SPEEDBIAS); // speed
     }
     for (int i = 0; i < NUM_OF_CAM; i++)
     {
         ceres::LocalParameterization *local_parameterization = new PoseLocalParameterization();
-        problem.AddParameterBlock(para_Ex_Pose[i], SIZE_POSE, local_parameterization);
+        problem.AddParameterBlock(para_Ex_Pose[i], SIZE_POSE, local_parameterization); // External parameter matrix
         if (!ESTIMATE_EXTRINSIC)
         {
             ROS_DEBUG("fix extinsic param");
@@ -693,6 +698,7 @@ void Estimator::optimization()
     }
     if (ESTIMATE_TD)
     {
+        // estimate time offset between camera and imu
         problem.AddParameterBlock(para_Td[0], 1);
         //problem.SetParameterBlockConstant(para_Td[0]);
     }
