@@ -132,7 +132,7 @@ void LineFeatureTracker::NearbyLineTracking(const vector<Line> forw_lines, const
 
 }
 
-//#define NLT
+#define NLT
 #ifdef  NLT
 void LineFeatureTracker::readImage(const cv::Mat &_img)
 {

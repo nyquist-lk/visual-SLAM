@@ -87,6 +87,7 @@ class IMUFactor : public ceres::SizedCostFunction<15, 7, 9, 7, 9>
 ///                ROS_BREAK();
             }
 
+            // drij/d(qi, pi)
             if (jacobians[0])
             {
                 Eigen::Map<Eigen::Matrix<double, 15, 7, Eigen::RowMajor>> jacobian_pose_i(jacobians[0]);
@@ -113,6 +114,7 @@ class IMUFactor : public ceres::SizedCostFunction<15, 7, 9, 7, 9>
                     ROS_BREAK();
                 }
             }
+            // drij/d(vi, bai, bgi)
             if (jacobians[1])
             {
                 Eigen::Map<Eigen::Matrix<double, 15, 9, Eigen::RowMajor>> jacobian_speedbias_i(jacobians[1]);
@@ -141,6 +143,7 @@ class IMUFactor : public ceres::SizedCostFunction<15, 7, 9, 7, 9>
                 ROS_ASSERT(fabs(jacobian_speedbias_i.maxCoeff()) < 1e8);
                 ROS_ASSERT(fabs(jacobian_speedbias_i.minCoeff()) < 1e8);
             }
+            // drij/d(qj, pj)
             if (jacobians[2])
             {
                 Eigen::Map<Eigen::Matrix<double, 15, 7, Eigen::RowMajor>> jacobian_pose_j(jacobians[2]);
@@ -160,6 +163,7 @@ class IMUFactor : public ceres::SizedCostFunction<15, 7, 9, 7, 9>
                 ROS_ASSERT(fabs(jacobian_pose_j.maxCoeff()) < 1e8);
                 ROS_ASSERT(fabs(jacobian_pose_j.minCoeff()) < 1e8);
             }
+            // drij/d(vj, baj, bgj)
             if (jacobians[3])
             {
                 Eigen::Map<Eigen::Matrix<double, 15, 9, Eigen::RowMajor>> jacobian_speedbias_j(jacobians[3]);

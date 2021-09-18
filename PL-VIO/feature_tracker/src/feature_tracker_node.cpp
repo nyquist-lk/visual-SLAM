@@ -205,7 +205,7 @@ void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
             {
                 cv::Mat tmp_img = stereo_img.rowRange(i * ROW, (i + 1) * ROW);
                 cv::cvtColor(show_img, tmp_img, CV_GRAY2RGB);
-//                tmp_img = trackerData[0].cur_img;
+                // tmp_img = trackerData[0].cur_img;
                 cv::cvtColor(trackerData[0].cur_img, tmp_img, CV_GRAY2RGB);
                 if (i != 1 || !STEREO_TRACK)
                 {

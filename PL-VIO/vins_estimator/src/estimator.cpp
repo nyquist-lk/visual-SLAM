@@ -1596,6 +1596,7 @@ void Estimator::optimizationwithLine()
                                                                            drop_set);
 
             marginalization_info->addResidualBlockInfo(residual_block_info);
+            ROS_DEBUG("addResidualBlockInfo last_marginalization_info");
         }
 
         // 2. 最老的两帧之间的 预积分 factor
@@ -1622,7 +1623,7 @@ void Estimator::optimizationwithLine()
                 ++feature_index;
 
                 int imu_i = it_per_id.start_frame, imu_j = imu_i - 1;
-                if (imu_i != 0)             // 如果这个特征的初始帧 不对应 要marg掉的最老帧0, 那就不用marg这个特征。即marg掉帧的时候，我们marg掉这帧上三角化的那些点
+                if (imu_i != 0) // 如果这个特征的初始帧 不对应 要marg掉的最老帧0, 那就不用marg这个特征。即marg掉帧的时候，我们marg掉这帧上三角化的那些点
                     continue;
 
                 Vector3d pts_i = it_per_id.feature_per_frame[0].point;

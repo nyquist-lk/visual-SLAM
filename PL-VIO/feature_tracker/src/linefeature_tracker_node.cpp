@@ -8,9 +8,6 @@
 
 #include "linefeature_tracker.h"
 
-// #include "feature_tracker.h"
-
-#define SHOW_UNDISTORTION 0
 
 vector<uchar> r_status;
 vector<float> r_err;
